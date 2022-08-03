@@ -26,7 +26,7 @@ public class ReadFile {
             }
         }
 
-        System.out.println(Arrays.deepToString(field));
+//        System.out.println(Arrays.deepToString(field));
         return field;
     }
 
