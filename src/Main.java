@@ -4,29 +4,28 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
         System.out.println("Main");
-        int[][] field;
-        ArrayList<String> result;
 
-        field = readField();
+        //Read .txt
+        ReadFile r = new ReadFile("textFiles/miniMap2.txt");
+        int[][] field  = r.prepareFile();
 
+        //Find all paths
         FindPath findPath = new FindPath(field);
-        result = findPath.allField();
+        findPath.allField();
 
-
-        System.out.println(result);
     }
 
-    private static int[][] readField(){
-        ReadFile r = new ReadFile();
-        r.openFile();
-        int [][] field = r.readFile();
-        r.closeFile();
-
-        System.out.println("Map: ");
-        System.out.println(Arrays.deepToString(field));
-
-        return field;
-    }
+//    private static int[][] readField(){
+//        ReadFile r = new ReadFile();
+//        r.openFile();
+//        int [][] field = r.readFile();
+//        r.closeFile();
+//
+////        System.out.println("Map: ");
+////        System.out.println(Arrays.deepToString(field));
+//
+//        return field;
+//    }
 
 
 }

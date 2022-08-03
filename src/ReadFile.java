@@ -5,16 +5,30 @@ public class ReadFile {
     private Scanner x;
     private String file;
 
-    public void openFile(){
-        file = "miniMap.txt";
+
+    public ReadFile(String file){
+        this.file = file;
+    }
+
+    public int[][] prepareFile(){
+        int [][] map;
+        openFile(this.file);
+        map =  readFile();
+        closeFile();
+        return map;
+    }
+
+    private void openFile(String file){
+//        file = "miniMap.txt";
         try{
-            x = new Scanner(new File("textFiles/miniMap.txt"));
+//            x = new Scanner(new File("textFiles/miniMap.txt"));
+            x = new Scanner(new File(file));
         }catch(Exception e){
             System.out.println("No file :(");
         }
     }
 
-    public int[][] readFile(){
+    private int[][] readFile(){
         int a = Integer.parseInt(x.next());
         int b = Integer.parseInt(x.next());
 
@@ -30,7 +44,7 @@ public class ReadFile {
         return field;
     }
 
-    public void closeFile(){
+    private void closeFile(){
         x.close();
     }
 
