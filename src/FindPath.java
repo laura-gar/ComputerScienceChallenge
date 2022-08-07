@@ -34,7 +34,7 @@ public class FindPath {
         //Check the whole field
         for (int i = row - 1; i >= 0; i--) {
             for (int j = 0; j < column; j++) {
-                if (field[i][j] > 0 && visited[i][j] == 0) {
+                if (field[i][j] > -1 && visited[i][j] == 0) {
                     myPair = searchPath(field, i, j, String.valueOf(field[i][j]), myPair.getFinalList(), myPair.getVisited());
                 }
             }
@@ -44,9 +44,12 @@ public class FindPath {
         longestPath = findLPath(myPair.getFinalList());
         System.out.println("Steepest path length:" + longestPath);
 
-        //Print all paths
-        prettyPrint(myPair.getFinalList());
-        System.out.println("Total paths: " + myPair.getFinalList().size() );
+        //All paths
+        System.out.println("Number of paths: " + myPair.getFinalList().size());
+
+//        Print all paths
+//        prettyPrint(myPair.getFinalList());
+//        System.out.println("Total paths: " + myPair.getFinalList().size() );
     }
 
     /**
@@ -83,6 +86,13 @@ public class FindPath {
             searchPath(matrix, x - 1, y, newPath, finalList, visited);
         }
 
+        //Search Down
+        if(x + 1 < row && currentPosition < matrix[x + 1][y]){
+            String newPath = path + "-" + String.valueOf(matrix[x + 1][y]);
+            visited[x][y] = 1;
+            searchPath(matrix, x + 1, y, newPath, finalList, visited);
+        }
+
         //Add to finalList if is not a sub path
         if (visited[x][y] == 0) {
             finalList.add(path);
@@ -102,11 +112,18 @@ public class FindPath {
      * @return Longer path
      */
     private String findLongest(String myPath, String newPath){
-        if(newPath.length() > myPath.length()){
+        //Convert string into array
+        String[] myString = myPath.split("-");
+        String[] newString = newPath.split("-");
+
+        //Check size
+        if(newString.length > myString.length){
             return newPath;
-        }else if(myPath.length() == newPath.length() &&  newPath.length() > 0 && myPath.length() > 0){
-            int difMyPath = Integer.parseInt(myPath.substring(myPath.length()-1));
-            int difNewPath = Integer.parseInt(newPath.substring(newPath.length()-1));
+        }
+        //Check difference
+        if(myString.length == newString.length &&  newPath.length() > 0 && myPath.length() > 0){
+            int difMyPath = Integer.parseInt(myString[myString.length-1]) - Integer.parseInt(myString[0]) ;
+            int difNewPath = Integer.parseInt(newString[newString.length-1])- Integer.parseInt(newString[0]) ;
             if(difNewPath > difMyPath){ return newPath; }
         }
         return myPath;
@@ -119,11 +136,20 @@ public class FindPath {
      */
     private String findLPath(ArrayList<String> myList){
         String longPath = "";
-        for(int i = 0; i < myList.size(); i++){
+        int longestDistance = 0;
+
+        for(int i = 0; i < myList.size(); i++) {
             longPath = findLongest(longPath, myList.get(i));
         }
+
+        String[] myString = longPath.split("-");
+        longestDistance = Integer.parseInt(myString[myString.length-1]) - Integer.parseInt(myString[0]) ;
+        System.out.println("Longest distance: " +  longestDistance);
         return longPath;
     }
+
+
+
 
     /**
      * Print list of paths
